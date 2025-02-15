@@ -57,3 +57,20 @@ mainFrame.playerName = mainFrame:CreateFontString(nil,"OVERLAY","GameFontNormal"
 mainFrame.playerName:SetPoint("TOPLEFT",mainFrame,"TOPLEFT",15,-35)
 -- Text of player name
 mainFrame.playerName:SetText("Character: "..UnitName("player").." (Level "..UnitLevel("player")..")")
+
+-- Defining function for event listener
+LootTableMessages = {}
+LootTableMessages["ENTER_COMBAT"] = "You have entered combat!"
+LootTableMessages["EXIT_COMBAT"] = "You have exited combat!"
+local L = LootTableMessages
+local eventListenerFrame = CreateFrame("Frame","LootTableEventListenerFrame",UIParent)
+eventListenerFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+eventListenerFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
+local function eventHandler(self,event,...)
+    if event == "PLAYER_REGEN_DISABLED" then
+        print(L["ENTER_COMBAT"])
+    elseif event == "PLAYER_REGEN_ENABLED" then
+        print(L["EXIT_COMBAT"])
+    end
+end
+eventListenerFrame:SetScript("OnEvent",eventHandler)
